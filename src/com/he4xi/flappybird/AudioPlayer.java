@@ -14,13 +14,11 @@ public class AudioPlayer {
     public AudioPlayer(String s) {
 
         try {
-            File soundfile = new File(s);
             AudioInputStream ais =
                     AudioSystem.getAudioInputStream(
                             getClass().getResourceAsStream(s)
                     );
             AudioFormat baseFormat = ais.getFormat();
-            AudioInputStream soundIn = AudioSystem.getAudioInputStream(soundfile);
             AudioFormat decodeFormat = new AudioFormat(
                     AudioFormat.Encoding.PCM_SIGNED,
                     baseFormat.getSampleRate(),

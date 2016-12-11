@@ -2,8 +2,8 @@ package com.he4xi.flappybird;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Class for the flappy bird/trump.
@@ -18,8 +18,10 @@ public class Bird {
         x = 100;
         y = FlappyBird.HEIGHT / 2;
 
+        InputStream is = getClass().getClassLoader().getResourceAsStream("trump2.png");
+
         try {
-            img = ImageIO.read(new File("trump2.png"));
+            img = ImageIO.read(is);
         } catch (IOException e) {
             e.printStackTrace();
         }

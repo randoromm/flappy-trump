@@ -3,8 +3,8 @@ package com.he4xi.flappybird;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -26,11 +26,15 @@ public class Display extends JPanel{
         scoreFont = new Font("Comic Sans MS", Font.BOLD, 18);
         pauseFont = new Font("Arial", Font.BOLD, 48);
 
+        InputStream is = getClass().getClassLoader().getResourceAsStream("americanflag.png");
+        
         try {
-            background = ImageIO.read(new File("americanflag.png"));
+            background = ImageIO.read(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
 
     }

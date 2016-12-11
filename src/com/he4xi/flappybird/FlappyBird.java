@@ -23,17 +23,21 @@ public class FlappyBird implements ActionListener, KeyListener {
     private Bird bird;
     private ArrayList<Rectangle> columns;
     private Timer timer;
-    private AudioPlayer bgMusic;
+    private AudioPlayer bgMusic, sfxWing, sfxHit, sfxDie;
     private int scroll, time;
 
     boolean paused;
 
     public FlappyBird() {
+        bgMusic = new AudioPlayer("america.mp3");
+        sfxWing = new AudioPlayer("sfx_wing.mp3");
+        sfxHit = new AudioPlayer("sfx_hit.mp3");
+        sfxDie = new AudioPlayer("sfx_die.mp3");
+
         frame = new JFrame("Lehviv Trump v1");
         bird = new Bird();
         columns = new ArrayList<>();
         display = new Display(this, bird, columns);
-        bgMusic = new AudioPlayer("airhorn.mp3");
 
         frame.add(display);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,12 +75,14 @@ public class FlappyBird implements ActionListener, KeyListener {
 
             ArrayList<Rectangle> toRemove = new ArrayList<>();
             for (Rectangle column : columns) {
-                column.x -= 3;
+                column.x -= 4;
                 if (column.x + column.width < 0) {
                     toRemove.add(column);
                 }
 
                 if ((column.contains(bird.x - 20, bird.y - 25)) || (column.contains(bird.x + 20, bird.y + 20))) {
+                    sfxHit.play();
+                    sfxDie.play();
                     game = false;
                 }
             }
@@ -86,6 +92,8 @@ public class FlappyBird implements ActionListener, KeyListener {
             time++;
 
             if (bird.y < 0 || bird.y + 20 > HEIGHT) {
+                sfxHit.play();
+                sfxDie.play();
                 game = false;
             }
 
@@ -93,6 +101,7 @@ public class FlappyBird implements ActionListener, KeyListener {
                 JOptionPane.showMessageDialog(frame, "You failed to make America great again!\n" +
                         "Your score was: " + time + ".");
                 paused = true;
+                bgMusic.stop();
                 columns.clear();
                 bird.reset();
                 time = 0;
@@ -111,7 +120,9 @@ public class FlappyBird implements ActionListener, KeyListener {
     public void keyPressed(KeyEvent k) {
         if (k.getKeyCode() == KeyEvent.VK_SPACE) {
             bird.jump();
+            sfxWing.play();
             if (paused) {
+                bgMusic.play();
                 paused = false;
             }
         }
